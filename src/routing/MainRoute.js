@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, NavLink, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  NavLink,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import Carburant from "../components/carburant/Carburant";
 import AddCuve from "../components/carburant/cuve/AddCuve";
 import Cuve from "../components/carburant/cuve/Cuve";
@@ -16,11 +22,13 @@ import Login from "../page/auth/Login";
 import Register from "../page/auth/Register";
 import PrivatedRoute from "./PrivatedRoute";
 import AccessDined from "../page/error/AccessDined";
+import HomeLayout from "./HomeLayout";
 
-const MainRoute = ({ user }) => {
+const MainRoute = ({ user, pth }) => {
   useEffect(() => {
     console.log("User " + user);
-  }, [user]);
+  }, []);
+
   return (
     //   <div>
     //   <header>
@@ -34,31 +42,33 @@ const MainRoute = ({ user }) => {
       <Route index element={<Login user={user} />} />
       <Route path="/login" element={<Login user={user} />} />
       <Route path="/register" element={<Register />} />
-      <Route element={<PrivatedRoute isAllowed={user !== undefined} />}>
-        <Route path="home" element={<Home />} />
+      <Route element={<HomeLayout user={user} />}>
+        <Route path="/home" element={<Home />} />
         {/* <Route path="dashboard" element={<Dashboard />} /> */}
       </Route>
       <Route
         element={
           <PrivatedRoute
-            redirectPath="/401"
-            isAllowed={user !== undefined && user?.roles.includes("USER_TRACE")}
+            // redirectPath={"/401"}
+            // isAllowed={user !== undefined && user?.roles.includes("USER")}
+            user={user}
           />
         }
       >
         <Route path="trace" element={<Trace />} />
         <Route path="trace/evenements" element={<EvenementList />} />
+        <Route path="trace/evenements/:id" element={<Evenement />} />
       </Route>
 
       <Route
         element={
-          <PrivatedRoute redirectPath="/401" isAllowed={user !== undefined} />
+          <PrivatedRoute redirectPath={"/401"} isAllowed={user !== undefined} />
         }
       >
         <Route path="carburant" element={<Carburant />} />
         <Route path="carburant/cuves" element={<CuveList />} />
       </Route>
-      <Route path="/401" element={<AccessDined />} />
+      <Route path="/401" element={<AccessDined user={user} pth={pth} />} />
     </Routes>
     //   </div>
     //  </main>
