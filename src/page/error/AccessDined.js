@@ -16,7 +16,7 @@ const AccessDined = ({ user, pth }) => {
   return (
     <>
       {console.log(" ACCESDINE" + user)}
-      <div class="container">
+      <div className="container">
         <section className="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center">
           <h1>403</h1>
           <h2>Vous n'avez pas accès à ce module </h2>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import authHeader from "../services/authHeader";
+import authHeader from "../services/auth/authHeader";
 
 export default axios.create({
   baseURL: "http://localhost:8080",

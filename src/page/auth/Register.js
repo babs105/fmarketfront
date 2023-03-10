@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import authService from "../../services/authService";
+import authService from "../../services/auth/authService";
 
 function Register() {
   const [successful, setSuccessful] = useState(false);
@@ -136,11 +136,7 @@ function Register() {
         </div> */}
 
         <div className="form-group mt-4">
-          <button
-            type="submit"
-            className="btn btn-primary b"
-            disabled={loading}
-          >
+          <button type="submit" className="btn btn-primary " disabled={loading}>
             {loading && (
               <span className="spinner-border spinner-border-sm"></span>
             )}
@@ -165,6 +161,14 @@ function Register() {
               role="alert"
             >
               {message}
+              <button
+                type="button"
+                className="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
           </div>
         )}

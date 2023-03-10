@@ -30,6 +30,7 @@ const PrivatedRoute = ({
   if (!user) {
     console.log("redirection " + user);
     // navigate(redirectPath);
+    // return <Navigate to={"/401"} replace />;
     return <AccessDined />;
   }
 
@@ -40,7 +41,9 @@ const PrivatedRoute = ({
         <NavBar />
       </header>
       <main style={{ marginTop: "58px" }}>
-        <div className="container pt-4">{children ? children : <Outlet />}</div>
+        <div className="container pt-4 card">
+          {children ? children : <Outlet />}
+        </div>
       </main>
     </div>
   );

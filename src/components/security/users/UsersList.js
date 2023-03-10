@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Pagination from "@material-ui/lab/Pagination";
-import evenementService from "../../../services/trace/evenement/evenementService";
+import authService from "../../../services/auth/authService";
 import { useTable } from "react-table";
 import { formatDateDDmmyyyy } from "../../../utils/formatDate";
 
-const EvenementList = (props) => {
+const UsersList = (props) => {
   // const history = useNavigate();
   let navigate = useNavigate();
-  const [evenements, setEvenements] = useState([]);
-  const evenementsRef = useRef();
-  evenementsRef.current = evenements;
+  const [users, setUsers] = useState([]);
+  const usersRef = useRef();
+  usersRef.current = users;
 
   const [searchTitle, setSearchTitle] = useState("");
 
@@ -23,7 +23,7 @@ const EvenementList = (props) => {
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     setSearchTitle(searchTitle);
-    //   retrieveEvenements();
+    //   retrieveusers();
   };
 
   const getRequestParams = (searchTitle, page, pageSize) => {
@@ -44,16 +44,16 @@ const EvenementList = (props) => {
     return params;
   };
 
-  const retrieveEvenements = () => {
+  const retrieveusers = () => {
     const params = getRequestParams(searchTitle, page, pageSize);
     console.log("params", params);
 
-    evenementService
+    authService
       .getAll(params)
       .then((response) => {
-        const { evenements, totalPages } = response.data;
+        const { users, totalPages } = response.data;
 
-        setEvenements(evenements);
+        setUsers(users);
         setCount(totalPages);
 
         console.log(response.data);
@@ -63,14 +63,14 @@ const EvenementList = (props) => {
       });
   };
 
-  useEffect(retrieveEvenements, [page, pageSize], searchTitle);
+  useEffect(retrieveusers, [page, pageSize], searchTitle);
 
   const refreshList = () => {
-    retrieveEvenements();
+    retrieveusers();
   };
 
-  const removeAllEvenements = () => {
-    evenementService
+  const removeAllusers = () => {
+    authService
       .removeAll()
       .then((response) => {
         console.log(response.data);
@@ -83,30 +83,30 @@ const EvenementList = (props) => {
 
   const findByTitle = () => {
     setPage(1);
-    retrieveEvenements();
+    retrieveusers();
   };
 
-  const openEvenement = (rowIndex) => {
-    const id = evenementsRef.current[rowIndex].id;
+  const openuser = (rowIndex) => {
+    const id = usersRef.current[rowIndex].id;
 
-    navigate("/trace/evenements/" + id);
+    navigate("/security/users/" + id);
   };
 
-  const deleteEvenement = (rowIndex) => {
-    const id = evenementsRef.current[rowIndex].id;
+  const deleteuser = (rowIndex) => {
+    const id = usersRef.current[rowIndex].id;
     console.log("Id", id);
     console.log("rowIndex", rowIndex);
-    console.log("evenement", evenements);
-    console.log("new events", [...evenementsRef.current]);
-    evenementService
+    console.log("user", users);
+    console.log("new events", [...usersRef.current]);
+    authService
       .remove(id)
       .then((response) => {
-        navigate("/trace/evenements");
+        navigate("/security/users");
 
-        let newevenements = [...evenementsRef.current];
-        newevenements.splice(rowIndex, 1);
+        let newusers = [...usersRef.current];
+        newusers.splice(rowIndex, 1);
 
-        setEvenements(newevenements);
+        setUsers(newusers);
       })
       .catch((e) => {
         console.log(e);
@@ -124,50 +124,16 @@ const EvenementList = (props) => {
   const columns = useMemo(
     () => [
       {
-        Header: "Date",
-        accessor: "dateEvent",
-        Cell: (props) => {
-          return formatDateDDmmyyyy(new Date(props?.value));
-        },
+        Header: "Prenom",
+        accessor: "firstname",
       },
       {
-        Header: "H.Debut",
-        accessor: "heureDebutEvent",
+        Header: "Nom",
+        accessor: "lastname",
       },
       {
-        Header: "Nature",
-        accessor: "natureEvent",
-      },
-      {
-        Header: "Cause",
-        accessor: "causeEvent",
-      },
-      {
-        Header: "Matr.Vehicule",
-        accessor: "matVehicule",
-      },
-      {
-        Header: "Localisation",
-        accessor: "localisation",
-      },
-      {
-        Header: "Etat",
-        accessor: "etatEvent",
-        Cell: (props) => {
-          return props.value === "Terminer" ? (
-            <span className="bg-success rounded-pill p-1 text-white ">
-              {props.value}
-            </span>
-          ) : props.value === "Encours" ? (
-            <span className="bg-danger rounded-pill p-1 text-white ">
-              {props.value}
-            </span>
-          ) : (
-            <span className="bg-warning rounded-pill p-1 text-white ">
-              {props.value}
-            </span>
-          );
-        },
+        Header: "Email",
+        accessor: "username",
       },
       {
         Header: "Actions",
@@ -176,22 +142,23 @@ const EvenementList = (props) => {
           const rowIdx = props.row.id;
 
           return (
-            <div>
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={() => openEvenement(rowIdx)}
+            <div className="d-flex justify-content-between ">
+              <button
+                className="btn btn-sm btn-outline-primary"
+                onClick={() => openuser(rowIdx)}
               >
-                <i className="far fa-edit action mr-2 text-info"></i>
-              </span>
+                <i className="far fa-edit action mr-2"></i>
+                Gerer les Roles
+              </button>
 
-              <span
-                style={{ cursor: "pointer" }}
+              <button
+                className="btn btn-sm  btn-outline-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                // onClick={() => deleteEvenement(rowIdx)}
+                // onClick={() => deleteuser(rowIdx)}
               >
-                <i className="fas fa-trash action text-danger"></i>
-              </span>
+                <i className="fas fa-trash action "></i>
+              </button>
               <div
                 className="modal fade"
                 id="exampleModal"
@@ -215,8 +182,7 @@ const EvenementList = (props) => {
                       </button>
                     </div>
                     <div className="modal-body">
-                      Vous allez supprimer cet évènement et tous ces remorquages
-                      et details accident ?
+                      Vous allez supprimer cet utilisateur ?
                     </div>
                     <div className="modal-footer">
                       <button
@@ -229,7 +195,7 @@ const EvenementList = (props) => {
                       <button
                         type="button"
                         data-dismiss="modal"
-                        onClick={() => deleteEvenement(rowIdx)}
+                        onClick={() => deleteuser(rowIdx)}
                         className="btn btn-danger"
                       >
                         Supprimer
@@ -249,7 +215,7 @@ const EvenementList = (props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: evenements,
+      data: users,
     });
 
   return (
@@ -257,11 +223,11 @@ const EvenementList = (props) => {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <Link to={"/trace"}>Le Tracé</Link>
+            <Link to={"/security"}>Sécurité</Link>
           </li>
 
           <li className="breadcrumb-item active" aria-current="page">
-            Evénèments
+            Utilisateurs
           </li>
         </ol>
       </nav>
@@ -311,9 +277,9 @@ const EvenementList = (props) => {
               shape="rounded"
               onChange={handlePageChange}
             />
-            <Link to={"/trace/evenements/add"}>
-              <button className="btn btn-primary">Ouvrir Evenement</button>
-            </Link>
+            {/* <Link to={"/security/users/add"}>
+              <button className="btn btn-primary">Ouvrir user</button>
+            </Link> */}
           </div>
           <table
             className="table table-sm table-striped table-bordered"
@@ -350,4 +316,4 @@ const EvenementList = (props) => {
     </>
   );
 };
-export default EvenementList;
+export default UsersList;

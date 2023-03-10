@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, NavLink, Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import "./App.css";
-import Home from "./page/Home";
-import authService from "./services/authService";
+
+import authService from "./services/auth/authService";
 import MainRoute from "./routing/MainRoute";
 
 const App = () => {

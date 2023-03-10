@@ -8,7 +8,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import authService from "../../services/authService";
+import authService from "../../services/auth/authService";
 
 function Login({ user }) {
   const [loading, setLoading] = useState(false);
@@ -24,6 +24,7 @@ function Login({ user }) {
   useEffect(() => {
     console.log("change route");
     if (user) {
+      console.log("ok  user");
       navigate("/home");
     }
   }, [user]);
@@ -129,8 +130,16 @@ function Login({ user }) {
 
         {message && (
           <div className="form-group">
-            <div className="alert alert-danger" role="alert">
+            <div className="alert alert-success" role="alert">
               {message}
+              <button
+                type="button"
+                className="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
           </div>
         )}
