@@ -9,7 +9,8 @@ const Security = () => {
   return (
     <div>
       <div className="container">
-        <div className="row m-3">
+        <h5 className="card-header">Gestion des Utilisateurs </h5>
+        <div className="row my-3">
           <div className="col">
             <div className="card">
               <h5 className="card-header">Utilisateurs </h5>

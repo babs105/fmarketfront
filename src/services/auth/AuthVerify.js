@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { redirect, useLocation } from "react-router-dom";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
+
 import authService from "./authService";
 
 const parseJwt = (token) => {
@@ -11,8 +12,9 @@ const parseJwt = (token) => {
   }
 };
 
-const AuthVerify = ({ props }) => {
+const AuthVerify = () => {
   let location = useLocation();
+  let navigate = useNavigate();
 
   useEffect(() => {
     //   const user = JSON.parse(localStorage.getItem("user"));
@@ -25,10 +27,11 @@ const AuthVerify = ({ props }) => {
       if (decodedJwt.exp * 1000 < Date.now()) {
         console.log("expier");
         authService.logout();
-        // redirect("/login");
+        navigate("/expire");
+        //   return <SessionExpire />;
       }
     }
-  }, [location, props]);
+  }, [location]);
 
   return <div></div>;
 };

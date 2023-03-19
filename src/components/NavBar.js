@@ -1,5 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import authService from "../services/auth/authService";
 const NavBar = () => {
+  let navigate = useNavigate();
   return (
     <nav
       id="main-navbar"
@@ -191,9 +194,16 @@ const NavBar = () => {
                 </a>
               </li>
               <li>
-                <a className="dropdown-item" href="#">
-                  Logout
-                </a>
+                <button
+                  className="dropdown-item"
+                  onClick={() => {
+                    authService.logout();
+                    navigate("/login");
+                    window.location.reload();
+                  }}
+                >
+                  Déconnexion
+                </button>
               </li>
             </ul>
           </li>

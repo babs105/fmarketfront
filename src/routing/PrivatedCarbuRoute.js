@@ -1,22 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route, NavLink, Navigate } from "react-router-dom";
-import Carburant from "../components/carburant/Carburant";
-import AddCuve from "../components/carburant/cuve/AddCuve";
-import Cuve from "../components/carburant/cuve/Cuve";
-import CuveList from "../components/carburant/cuve/CuveList";
+import { useEffect } from "react";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
-import AddEvenement from "../components/trace/evenement/AddEvenement";
-import Evenement from "../components/trace/evenement/Evenement";
-import EvenementList from "../components/trace/evenement/EvenementList";
-import RemorquageList from "../components/trace/remorquage/RemorquageList";
-import Trace from "../components/trace/Trace";
-import Home from "../page/Home";
+import AccessDined from "../page/error/AccessDined";
 
-const PrivatedCarbuRoute = ({ isAllowed, redirectPath = "/login" }) => {
-  if (!isAllowed) {
-    return <Navigate to={redirectPath} replace />;
+const PrivatedCarbuRoute = ({
+  children,
+
+  user,
+}) => {
+  const location = useLocation();
+  let navigate = useNavigate();
+  // useEffect(() => {
+  //   console.log("private route" + redirectPath);
+  //   console.log("permet" + isAllowed);
+  //   if (!user || !user?.roles.includes("USER")) {
+  //     console.log("redirection " + isAllowed);
+  //     // navigate("/401");
+  //     // return <Navigate to={redirectPath} replace />;
+  //   }
+  // }, []);
+  // if (!isAllowed) {
+  //   console.log("redirection " + isAllowed);
+  //   // navigate(redirectPath);
+  //   return <Navigate to={redirectPath} replace />;
+  // }
+  if (!user?.roles.includes("USER_CARBURANT")) {
+    console.log("redirection " + user);
+    // navigate(redirectPath);
+    // return <Navigate to={"/401"} replace />;
+    return <AccessDined />;
   }
+
   return (
     <div>
       <header>
@@ -24,15 +39,8 @@ const PrivatedCarbuRoute = ({ isAllowed, redirectPath = "/login" }) => {
         <NavBar />
       </header>
       <main style={{ marginTop: "58px" }}>
-        <div className="container pt-4">
-          <Routes>
-            {/* <Route path="/" element={<Home/>} /> */}
-
-            <Route path="/" element={<Carburant />} />
-            <Route path="/cuves" element={<CuveList />} />
-            <Route path="/cuves/add" element={<AddCuve />} />
-            <Route path="/cuves/:id" element={<Cuve />} />
-          </Routes>
+        <div className="container pt-4 card">
+          {children ? children : <Outlet />}
         </div>
       </main>
     </div>

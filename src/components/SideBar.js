@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, NavLink, Navigate } from "react-router-dom";
+import { Routes, Route, NavLink, Navigate, Link } from "react-router-dom";
 const SideBar = () => {
   return (
     <div>
@@ -16,7 +16,7 @@ const SideBar = () => {
               aria-current="true"
             >
               <i className="fas fa-tachometer-alt fa-fw me-3"></i>
-              <span>Le Trace</span>
+              <span> Le Tracé</span>
             </NavLink>
             <NavLink
               activeclassname="active"
@@ -24,7 +24,7 @@ const SideBar = () => {
               className="list-group-item list-group-item-action py-2 ripple  font-weight-bold "
             >
               <i className="fas fa-chart-area fa-fw me-3"></i>
-              <span>Carburant</span>
+              <span> Carburant</span>
             </NavLink>
             <NavLink
               to={"/parcauto"}
@@ -32,17 +32,10 @@ const SideBar = () => {
               className="list-group-item list-group-item-action py-2 ripple font-weight-bold"
             >
               <i className="fas fa-lock fa-fw me-3"></i>
-              <span>Parc Automobile</span>{" "}
+              <span> Parc Automobile</span>{" "}
             </NavLink>
-            <NavLink
-              to={"/security"}
-              activeclassname="active"
-              className="list-group-item list-group-item-action py-2 ripple font-weight-bold"
-            >
-              <i className="fas fa-users fa-fw me-3"></i>
-              <span>Users</span>
-            </NavLink>
-            <a
+
+            {/* <a
               href="#"
               className="list-group-item list-group-item-action py-2 ripple"
             >
@@ -97,9 +90,55 @@ const SideBar = () => {
             >
               <i className="fas fa-money-bill fa-fw me-3"></i>
               <span>Sales</span>
-            </a>
+            </a> */}
             <a
-              className="list-group-item list-group-item-action py-2 ripple"
+              className="list-group-item list-group-item-action  font-weight-bold py-2 ripple"
+              aria-current="true"
+              data-toggle="collapse"
+              href="#collapseReport1"
+              aria-expanded="true"
+              aria-controls="collapseExample1"
+            >
+              <i className="fas fa-tachometer-alt fa-fw me-3"></i>
+              <span>Rapport ▾</span>
+            </a>
+
+            <ul
+              id="collapseReport1"
+              className="collapse list-group list-group-flush"
+            >
+              <li className="list-group-item py-1">
+                <NavLink
+                  to={"/report/trace"}
+                  activeclassname="active"
+                  // className=" py-2 ripple text-primary"
+                  className="list-group-item list-group-item-action py-1 ripple "
+                >
+                  <span className=""> Tracé</span>
+                </NavLink>
+              </li>
+              <li className="list-group-item py-1">
+                <NavLink
+                  to={"/report/carburant"}
+                  activeclassname="active"
+                  className="list-group-item list-group-item-action py-1 ripple "
+                >
+                  <span className="">Carburant</span>
+                </NavLink>
+              </li>
+              {/* <li className="list-group-item py-1">
+                <a href="" className="text-reset">
+                  Link
+                </a>
+              </li>
+              <li className="list-group-item py-1">
+                <a href="" className="text-reset">
+                  Link
+                </a>
+              </li> */}
+            </ul>
+            <a
+              className="list-group-item list-group-item-action  font-weight-bold py-2 ripple"
               aria-current="true"
               data-toggle="collapse"
               href="#collapseExample1"
@@ -107,14 +146,33 @@ const SideBar = () => {
               aria-controls="collapseExample1"
             >
               <i className="fas fa-tachometer-alt fa-fw me-3"></i>
-              <span>Expanded menu ▾</span>
+              <span>Paramètrage ▾</span>
             </a>
 
             <ul
               id="collapseExample1"
-              className="collapse  list-group list-group-flush"
+              className="collapse list-group list-group-flush"
             >
               <li className="list-group-item py-1">
+                <NavLink
+                  to={"/paramvhl"}
+                  activeclassname="active"
+                  // className=" py-2 ripple text-primary"
+                  className="list-group-item list-group-item-action py-1 ripple "
+                >
+                  <span className=""> Véhicules</span>
+                </NavLink>
+              </li>
+              <li className="list-group-item py-1">
+                <NavLink
+                  to={"/paramrh"}
+                  activeclassname="active"
+                  className="list-group-item list-group-item-action py-1 ripple "
+                >
+                  <span className="">RH</span>
+                </NavLink>
+              </li>
+              {/* <li className="list-group-item py-1">
                 <a href="" className="text-reset">
                   Link
                 </a>
@@ -123,20 +181,17 @@ const SideBar = () => {
                 <a href="" className="text-reset">
                   Link
                 </a>
-              </li>
-              <li className="list-group-item py-1">
-                <a href="" className="text-reset">
-                  Link
-                </a>
-              </li>
-              <li className="list-group-item py-1">
-                <a href="" className="text-reset">
-                  Link
-                </a>
-              </li>
+              </li> */}
             </ul>
-
-            <a
+            <NavLink
+              to={"/security"}
+              activeclassname="active"
+              className="list-group-item list-group-item-action py-2 ripple font-weight-bold"
+            >
+              <i className="fas fa-users fa-fw me-3"></i>
+              <span> Utilisateurs</span>
+            </NavLink>
+            {/* <a
               className="list-group-item list-group-item-action py-2 ripple"
               aria-current="true"
               data-toggle="collapse"
@@ -246,7 +301,7 @@ const SideBar = () => {
                   Link
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       </nav>

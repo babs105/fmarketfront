@@ -4,6 +4,7 @@ import {
   useNavigate,
   useLocation,
   Navigate,
+  Link,
 } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,6 +12,7 @@ import * as Yup from "yup";
 import authService from "../../services/auth/authService";
 
 function Login({ user }) {
+  const [successful, setSuccessful] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -59,6 +61,8 @@ function Login({ user }) {
       () => {
         console.log("OK login");
         navigate("/home");
+        setLoading(false);
+        setSuccessful(true);
         window.location.reload();
       },
       (error) => {
@@ -70,6 +74,7 @@ function Login({ user }) {
           error.toString();
 
         setLoading(false);
+        setSuccessful(false);
         setMessage(resMessage);
       }
     );
@@ -78,10 +83,10 @@ function Login({ user }) {
   return (
     <div className=" d-flex  flex-column justify-content-center align-items-center   ">
       <form className="card p-4 col-sm-3 m-3" onSubmit={handleSubmit(onSubmit)}>
-        <h3 className="text-center mb-4">Connexion </h3>
+        <h3 className="text-center mb-4 text-primary">Connexion </h3>
 
         <div className="form-group">
-          <label>Username</label>
+          <label>Email</label>
           <input
             name="username"
             type="text"
@@ -92,7 +97,7 @@ function Login({ user }) {
         </div>
 
         <div className="form-group">
-          <label>Password</label>
+          <label>Mot de Passe</label>
           <input
             name="password"
             type="password"
@@ -127,10 +132,17 @@ function Login({ user }) {
             <span>Login</span>
           </button>
         </div>
-
+        <div className="text-center  mt-4">
+          <Link to={"/register"}> Ouvrir Compte</Link>
+        </div>
         {message && (
           <div className="form-group">
-            <div className="alert alert-success" role="alert">
+            <div
+              className={
+                successful ? "alert alert-success" : "alert alert-danger"
+              }
+              role="alert"
+            >
               {message}
               <button
                 type="button"

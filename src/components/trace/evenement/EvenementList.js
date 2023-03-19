@@ -9,6 +9,8 @@ const EvenementList = (props) => {
   // const history = useNavigate();
   let navigate = useNavigate();
   const [evenements, setEvenements] = useState([]);
+  const [idDelete, setIdDelete] = useState();
+  const [showModal, setShowModal] = useState(false);
   const evenementsRef = useRef();
   evenementsRef.current = evenements;
 
@@ -92,19 +94,17 @@ const EvenementList = (props) => {
     navigate("/trace/evenements/" + id);
   };
 
-  const deleteEvenement = (rowIndex) => {
-    const id = evenementsRef.current[rowIndex].id;
-    console.log("Id", id);
-    console.log("rowIndex", rowIndex);
-    console.log("evenement", evenements);
-    console.log("new events", [...evenementsRef.current]);
+  const deleteEvenement = () => {
+    const id = evenementsRef.current[idDelete]?.id;
+    console.log("Idf", id);
+    console.log("rowIndexf", idDelete);
     evenementService
       .remove(id)
       .then((response) => {
-        navigate("/trace/evenements");
+        // navigate("/trace/evenements");
 
         let newevenements = [...evenementsRef.current];
-        newevenements.splice(rowIndex, 1);
+        newevenements.splice(idDelete, 1);
 
         setEvenements(newevenements);
       })
@@ -158,9 +158,9 @@ const EvenementList = (props) => {
             <span className="bg-success rounded-pill p-1 text-white ">
               {props.value}
             </span>
-          ) : props.value === "Encours" ? (
+          ) : props.value === "En Cours" ? (
             <span className="bg-danger rounded-pill p-1 text-white ">
-              {props.value}
+              En cours
             </span>
           ) : (
             <span className="bg-warning rounded-pill p-1 text-white ">
@@ -168,6 +168,10 @@ const EvenementList = (props) => {
             </span>
           );
         },
+      },
+      {
+        Header: "Statut",
+        accessor: "statutEvent",
       },
       {
         Header: "Actions",
@@ -179,7 +183,7 @@ const EvenementList = (props) => {
             <div>
               <span
                 style={{ cursor: "pointer" }}
-                onClick={() => openEvenement(rowIdx)}
+                onClick={() => openEvenement(props.row.id)}
               >
                 <i className="far fa-edit action mr-2 text-info"></i>
               </span>
@@ -188,56 +192,13 @@ const EvenementList = (props) => {
                 style={{ cursor: "pointer" }}
                 data-toggle="modal"
                 data-target="#exampleModal"
-                // onClick={() => deleteEvenement(rowIdx)}
+                onClick={() => {
+                  setIdDelete(rowIdx);
+                  // setShowModal(true);
+                }}
               >
                 <i className="fas fa-trash action text-danger"></i>
               </span>
-              <div
-                className="modal fade"
-                id="exampleModal"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Confirmation
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      Vous allez supprimer cet évènement et tous ces remorquages
-                      et details accident ?
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Annuler
-                      </button>
-                      <button
-                        type="button"
-                        data-dismiss="modal"
-                        onClick={() => deleteEvenement(rowIdx)}
-                        className="btn btn-danger"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           );
         },
@@ -254,6 +215,7 @@ const EvenementList = (props) => {
 
   return (
     <>
+      {/* {console.log("idedel", idDelete)} */}
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -345,6 +307,53 @@ const EvenementList = (props) => {
               })}
             </tbody>
           </table>
+        </div>
+
+        <div
+          className="modal fade"
+          id="exampleModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
+                  Confirmation
+                </h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                Vous allez supprimer cet évènement et tous ces remorquages et
+                details accident ?
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="button"
+                  data-dismiss="modal"
+                  onClick={deleteEvenement}
+                  className="btn btn-danger"
+                >
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

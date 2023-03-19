@@ -370,7 +370,7 @@ function AddDetailAccident() {
             </button>
 
             <button
-              type="button"
+              type="reset"
               onClick={reset}
               className="btn btn-warning float-right"
             >

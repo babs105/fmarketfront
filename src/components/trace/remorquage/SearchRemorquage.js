@@ -29,6 +29,7 @@ const SearchRemorquage = (props) => {
   const [message, setMessage] = useState("");
   const [seachRomField, setSeachRomField] = useState(null);
   const [remorquages, setRemorquages] = useState([]);
+  const [idDelete, setIdDelete] = useState();
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
   const remorquagesRef = useRef();
@@ -147,9 +148,9 @@ const SearchRemorquage = (props) => {
     console.log("id rom :", id);
     navigate("/trace/event/remorquage/edit/" + id);
   };
-  const deleteRemorquage = (rowIndex) => {
+  const deleteRemorquage = () => {
     setMessage("");
-    const id = remorquagesRef.current[rowIndex].id;
+    const id = remorquagesRef.current[idDelete].id;
     console.log("Id", id);
     remorquageService
       .remove(id)
@@ -157,7 +158,7 @@ const SearchRemorquage = (props) => {
         // navigate("/trace/evenements");
 
         let newremorquages = [...remorquagesRef.current];
-        newremorquages.splice(rowIndex, 1);
+        newremorquages.splice(idDelete, 1);
 
         // setEvenement({ ...evenement, remorquages: newremorquages });
         setRemorquages(newremorquages);
@@ -168,6 +169,57 @@ const SearchRemorquage = (props) => {
         console.log(e);
         setMessage(e.toString());
         setSuccessful(false);
+      });
+  };
+  const genererExcel = () => {
+    console.log("test");
+    const {
+      dateRom,
+      matVhlRemorque,
+      catVhlRemorque,
+      nomROM,
+      matriculeDep,
+      pka,
+      secteur,
+      lieuDepart,
+      lieuDepot,
+      statutRom,
+    } = seachRomField;
+    const res = {
+      dateRom,
+      matVhlRemorque,
+      catVhlRemorque,
+      nomROM,
+      matriculeDep,
+      pka,
+      secteur,
+      lieuDepart,
+      lieuDepot,
+      statutRom,
+    };
+
+    console.log("field", res);
+    remorquageService
+      .genererExcel(res)
+      .then((response) => {
+        var date = new Date();
+        var filename = `Remorquages-${date.getDay()}-${
+          date.getMonth() + 1
+        }-${date.getFullYear()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`;
+        var url = window.URL.createObjectURL(
+          new Blob([response.data], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;",
+          })
+        );
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = filename + ".xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
   const columns = useMemo(
@@ -233,66 +285,15 @@ const SearchRemorquage = (props) => {
               >
                 <i className="far fa-edit action mr-2 text-info"></i>
               </span>
-              {/* 
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={() => deleteRemorquage(rowIdx)}
-              >
-                <i className="fas fa-trash action text-danger"></i>
-              </span> */}
+
               <span
                 style={{ cursor: "pointer" }}
                 data-toggle="modal"
                 data-target="#modalRemorque"
-                // onClick={() => deleteEvenement(rowIdx)}
+                onClick={() => setIdDelete(rowIdx)}
               >
                 <i className="fas fa-trash action text-danger"></i>
               </span>
-              <div
-                className="modal fade"
-                id="modalRemorque"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Confirmation
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      Vous allez supprimer les informations de remorquage ?
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Annuler
-                      </button>
-                      <button
-                        type="button"
-                        data-dismiss="modal"
-                        onClick={() => deleteRemorquage(rowIdx)}
-                        className="btn btn-danger"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           );
         },
@@ -578,9 +579,9 @@ const SearchRemorquage = (props) => {
       {remorquages?.length > 0 ? (
         <div className="">
           <h5 className="text-primary card-title ">Remorquages</h5>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between items-align-center my-3">
             <Pagination
-              className="my-3"
+              //   className="my-3"
               count={count}
               page={page}
               siblingCount={1}
@@ -590,9 +591,11 @@ const SearchRemorquage = (props) => {
               shape="rounded"
               onChange={handlePageChange}
             />
-            {/* <Link to={"/trace/evenements/add"}>
-              <button className="btn btn-primary">Ouvrir Evenement</button>
-            </Link> */}
+            <div>
+              <button onClick={genererExcel} className="btn btn-success">
+                Exporter
+              </button>
+            </div>
           </div>
           <table
             className="table table-sm table-striped table-bordered"
@@ -628,6 +631,51 @@ const SearchRemorquage = (props) => {
       ) : (
         <h4 className="text-center text-primary">AUCUN RÉSULTAT TROUVE</h4>
       )}
+      <div
+        className="modal fade"
+        id="modalRemorque"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Confirmation
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              Vous allez supprimer les informations de remorquage ?
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                data-dismiss="modal"
+                onClick={deleteRemorquage}
+                className="btn btn-danger"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

@@ -614,7 +614,7 @@ const AddEvenement = (props) => {
               </div>
             </div>
             <div className="form-row mb-4">
-              <div className="form-group col">
+              {/* <div className="form-group col">
                 <label htmlFor="etatEvent">Etat Evenement</label>
                 <input
                   type="text"
@@ -628,7 +628,7 @@ const AddEvenement = (props) => {
                 <div className="invalid-feedback">
                   {errors.etatEvent?.message}
                 </div>
-              </div>
+              </div> */}
               <div className="form-group col">
                 <label htmlFor="observation">Observation</label>
                 <textarea
@@ -661,7 +661,7 @@ const AddEvenement = (props) => {
               </button>
 
               <button
-                type="button"
+                type="reset"
                 onClick={reset}
                 className="btn btn-warning float-right"
               >

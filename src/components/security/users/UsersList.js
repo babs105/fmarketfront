@@ -9,6 +9,10 @@ const UsersList = (props) => {
   // const history = useNavigate();
   let navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [successful, setSuccessful] = useState(false);
+  const [idDelete, setIdDelete] = useState();
   const usersRef = useRef();
   usersRef.current = users;
 
@@ -92,24 +96,26 @@ const UsersList = (props) => {
     navigate("/security/users/" + id);
   };
 
-  const deleteuser = (rowIndex) => {
-    const id = usersRef.current[rowIndex].id;
+  const deleteUser = () => {
+    const id = usersRef.current[idDelete].id;
     console.log("Id", id);
-    console.log("rowIndex", rowIndex);
-    console.log("user", users);
-    console.log("new events", [...usersRef.current]);
+
     authService
       .remove(id)
       .then((response) => {
         navigate("/security/users");
 
         let newusers = [...usersRef.current];
-        newusers.splice(rowIndex, 1);
+        newusers.splice(idDelete, 1);
 
         setUsers(newusers);
+        setMessage("Role supprimé avec succes");
+        setSuccessful(true);
       })
       .catch((e) => {
         console.log(e);
+        setMessage("erreur supprrsion");
+        setSuccessful(false);
       });
   };
 
@@ -155,55 +161,10 @@ const UsersList = (props) => {
                 className="btn btn-sm  btn-outline-danger"
                 data-toggle="modal"
                 data-target="#exampleModal"
-                // onClick={() => deleteuser(rowIdx)}
+                onClick={() => setIdDelete(rowIdx)}
               >
                 <i className="fas fa-trash action "></i>
               </button>
-              <div
-                className="modal fade"
-                id="exampleModal"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Confirmation
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      Vous allez supprimer cet utilisateur ?
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Annuler
-                      </button>
-                      <button
-                        type="button"
-                        data-dismiss="modal"
-                        onClick={() => deleteuser(rowIdx)}
-                        className="btn btn-danger"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           );
         },
@@ -311,6 +272,51 @@ const UsersList = (props) => {
               })}
             </tbody>
           </table>
+          <div
+            className="modal fade"
+            id="exampleModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title" id="exampleModalLabel">
+                    Confirmation
+                  </h5>
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  Vous allez supprimer cet utilisateur ?
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="button"
+                    data-dismiss="modal"
+                    onClick={deleteUser}
+                    className="btn btn-danger"
+                  >
+                    Supprimer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

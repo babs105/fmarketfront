@@ -29,6 +29,11 @@ const findByTitle = (title) => {
 const search = (params) => {
   return http.post("/trace/remorquages/search", params);
 };
+const genererExcel = (data) => {
+  return http.post("/trace/remorquages/search/excel", data, {
+    responseType: "arraybuffer",
+  });
+};
 
 const remorquageService = {
   getAll,
@@ -39,6 +44,7 @@ const remorquageService = {
   removeAll,
   findByTitle,
   search,
+  genererExcel,
 };
 
 export default remorquageService;

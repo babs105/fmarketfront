@@ -66,20 +66,6 @@ const EditRemorquage = (props) => {
 
   const getRemorquage = (id) => {
     console.log("ID", id);
-    // evenementService
-    //   .get(id)
-    //   .then((response) => {
-    //     let dateEvent = formatDateYYYYMMdd(new Date(response.data.dateEvent));
-    //     const evenement = { ...response.data, dateEvent };
-    //     console.log(response.data);
-    //     setValue("eventid", evenement.id);
-    //     setValue("dateRom", evenement.dateEvent);
-    //     setValue("matVhlRemorque", evenement.matVehicule);
-    //     setValue("catVhlRemorque", evenement.typeVehicule);
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //   });
     remorquageService
       .get(id)
       .then((response) => {

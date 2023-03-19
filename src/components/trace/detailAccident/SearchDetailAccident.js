@@ -29,6 +29,7 @@ function SearchDetailAccident() {
   const [detailAccidents, setDetailAccidents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [successful, setSuccessful] = useState(false);
+  const [idDelete, setIdDelete] = useState();
   const detailAccidentsRef = useRef();
   detailAccidentsRef.current = detailAccidents;
 
@@ -143,15 +144,15 @@ function SearchDetailAccident() {
     console.log("id acci:", id);
     navigate("/trace/event/detailaccident/edit/" + id);
   };
-  const deleteDetailAccident = (rowIndex) => {
-    const idacci = detailAccidentsRef.current[rowIndex].id;
+  const deleteDetailAccident = () => {
+    const idacci = detailAccidentsRef.current[idDelete].id;
     setMessage("");
 
     detailAccidentService
       .remove(idacci)
       .then((response) => {
         let newaccidents = [...detailAccidentsRef.current];
-        newaccidents.splice(rowIndex, 1);
+        newaccidents.splice(idDelete, 1);
         setDetailAccidents({ ...newaccidents });
         setMessage("Detail Accident Supprime");
         setSuccessful(true);
@@ -224,57 +225,10 @@ function SearchDetailAccident() {
                 style={{ cursor: "pointer" }}
                 data-toggle="modal"
                 data-target="#modalAccident"
-                // onClick={() => deleteEvenement(rowIdx)}
+                onClick={() => setIdDelete(rowIdx)}
               >
                 <i className="fas fa-trash action text-danger"></i>
               </span>
-              <div
-                className="modal fade"
-                id="modalAccident"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="exampleModalLabel">
-                        Confirmation
-                      </h5>
-                      <button
-                        type="button"
-                        className="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div className="modal-body">
-                      Vous allez supprimer les details accidents ?
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-dismiss="modal"
-                      >
-                        Annuler
-                      </button>
-                      <button
-                        type="button"
-                        data-dismiss="modal"
-                        onClick={() => {
-                          deleteDetailAccident(rowIdx);
-                        }}
-                        className="btn btn-danger"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           );
         },
@@ -566,6 +520,51 @@ function SearchDetailAccident() {
       ) : (
         <h4 className="text-center text-primary">AUCUN RÉSULTAT TROUVE</h4>
       )}
+      <div
+        className="modal fade"
+        id="modalAccident"
+        tabIndex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Confirmation
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              Vous allez supprimer les details accidents ?
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Annuler
+              </button>
+              <button
+                type="button"
+                data-dismiss="modal"
+                onClick={deleteDetailAccident}
+                className="btn btn-danger"
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -135,17 +135,6 @@ const AddRemorquage = (props) => {
       <div className="mt-4">
         <div className="d-flex justify-content-between">
           <h4 className="text-primary">Ajout Remorquage</h4>
-          {/* <div>
-          {Remorquage?.natureEvent === "ACCIDENT" &&
-            detailAccidents?.length !== 1 && (
-              <>
-                <button className="btn btn-danger mr-2">
-                  Ajout Detail Accident
-                </button>
-              </>
-            )}
-          <button className="btn btn-primary"> Ajout Remorquage</button>
-        </div> */}
         </div>
         <hr className="mb-4" />
         <div className="edit-form ">
