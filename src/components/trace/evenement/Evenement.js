@@ -153,53 +153,7 @@ const Evenement = (props) => {
     if (id) getEvenement(id);
   }, [id]);
   const emis = watch("emisPar");
-  // const handleInputChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setCurrentEvenement({ ...currentEvenement, [name]: value });
-  // };
 
-  // const updatePublished = (status) => {
-  //   var data = {
-  //     id: currentEvenement.id,
-  //     title: currentEvenement.title,
-  //     description: currentEvenement.description,
-  //     published: status,
-  //   };
-
-  //   evenementService
-  //     .update(currentEvenement.id, data)
-  //     .then((response) => {
-  //       setCurrentEvenement({ ...currentEvenement, published: status });
-  //       console.log(response.data);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
-
-  // const updateEvenement = () => {
-  //   evenementService
-  //     .update(currentEvenement.id, currentEvenement)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setMessage("Evenement modifie avec succes!");
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
-
-  // const deleteEvenement = () => {
-  //   evenementService
-  //     .remove(currentEvenement.id)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       navigate("/evenements");
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //     });
-  // };
   const openRemorquage = (rowIndex) => {
     const id = remorquagesRef.current[rowIndex].id;
     console.log("id rom :", id);

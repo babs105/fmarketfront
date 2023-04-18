@@ -53,15 +53,16 @@ const EvenementList = (props) => {
     evenementService
       .getAll(params)
       .then((response) => {
+        console.log("DARA", response.data);
         const { evenements, totalPages } = response.data;
 
         setEvenements(evenements);
         setCount(totalPages);
 
-        console.log(response.data);
+        // console.log(response.data);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 

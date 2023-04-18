@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Pagination from "@material-ui/lab/Pagination";
-import balayageService from "../../../services/trace/balayage/balayageService";
+import desherbageService from "../../../services/trace/desherbage/desherbageService";
 import { useTable } from "react-table";
-import {
-  formatDateDDmmyyyy,
-  formatDateDDmmyyyyhhmm,
-} from "../../../utils/formatDate";
+import { formatDateDDmmyyyy } from "../../../utils/formatDate";
 
-const BalayageList = (props) => {
+const DesherbageList = (props) => {
   // const history = useNavigate();
   let navigate = useNavigate();
-  const [balayages, setBalayages] = useState([]);
+  const [Desherbages, setDesherbages] = useState([]);
   const [idDelete, setIdDelete] = useState();
-  const [showModal, setShowModal] = useState(false);
-  const balayagesRef = useRef();
-  balayagesRef.current = balayages;
+  const DesherbagesRef = useRef();
+  DesherbagesRef.current = Desherbages;
 
   const [searchTitle, setSearchTitle] = useState("");
 
@@ -28,7 +24,7 @@ const BalayageList = (props) => {
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     setSearchTitle(searchTitle);
-    //   retrievebalayages();
+    //   retrieveDesherbages();
   };
 
   const getRequestParams = (searchTitle, page, pageSize) => {
@@ -49,16 +45,16 @@ const BalayageList = (props) => {
     return params;
   };
 
-  const retrievebalayages = () => {
+  const retrieveDesherbages = () => {
     const params = getRequestParams(searchTitle, page, pageSize);
     console.log("params", params);
 
-    balayageService
+    desherbageService
       .getAll(params)
       .then((response) => {
-        const { balayages, totalPages } = response.data;
+        const { desherbages, totalPages } = response.data;
 
-        setBalayages(balayages);
+        setDesherbages(desherbages);
         setCount(totalPages);
 
         console.log(response.data);
@@ -68,14 +64,14 @@ const BalayageList = (props) => {
       });
   };
 
-  useEffect(retrievebalayages, [page, pageSize], searchTitle);
+  useEffect(retrieveDesherbages, [page, pageSize], searchTitle);
 
   const refreshList = () => {
-    retrievebalayages();
+    retrieveDesherbages();
   };
 
-  const removeAllbalayages = () => {
-    balayageService
+  const removeAllDesherbages = () => {
+    desherbageService
       .removeAll()
       .then((response) => {
         console.log(response.data);
@@ -88,28 +84,28 @@ const BalayageList = (props) => {
 
   const findByTitle = () => {
     setPage(1);
-    retrievebalayages();
+    retrieveDesherbages();
   };
 
-  const openbalayage = (rowIndex) => {
-    const id = balayagesRef.current[rowIndex].id;
+  const openDesherbage = (rowIndex) => {
+    const id = DesherbagesRef.current[rowIndex].id;
 
-    navigate("/trace/balayages/edit/" + id);
+    navigate("/trace/Desherbages/edit/" + id);
   };
 
-  const deletebalayage = () => {
-    const id = balayagesRef.current[idDelete]?.id;
+  const deleteDesherbage = () => {
+    const id = DesherbagesRef.current[idDelete]?.id;
     console.log("Idf", id);
     console.log("rowIndexf", idDelete);
-    balayageService
+    desherbageService
       .remove(id)
       .then((response) => {
-        // navigate("/trace/balayages");
+        // navigate("/trace/Desherbages");
 
-        let newbalayages = [...balayagesRef.current];
-        newbalayages.splice(idDelete, 1);
+        let newDesherbages = [...DesherbagesRef.current];
+        newDesherbages.splice(idDelete, 1);
 
-        setBalayages(newbalayages);
+        setDesherbages(newDesherbages);
       })
       .catch((e) => {
         console.log(e);
@@ -124,6 +120,7 @@ const BalayageList = (props) => {
     setPageSize(event.target.value);
     setPage(1);
   };
+
   const columns = useMemo(
     () => [
       {
@@ -134,59 +131,38 @@ const BalayageList = (props) => {
         },
       },
       {
-        Header: "Type Balayage",
-        accessor: "typeBalayage",
+        Header: "Type Desherbage",
+        accessor: "typeDesherbage",
       },
       {
-        Header: "Type Balisage",
-        accessor: "typeBalisage",
-      },
-      // {
-      //   Header: "Date/H.Pose",
-      //   accessor: "datePose",
-      //   Cell: (props) => {
-      //     if (props?.value)
-      //       return formatDateDDmmyyyyhhmm(new Date(props?.value));
-      //     else return "NON";
-      //   },
-      // },
-      // {
-      //   Header: "Date/H.DéPose",
-      //   accessor: "dateDepose",
-      //   Cell: (props) => {
-      //     if (props?.value)
-      //       return formatDateDDmmyyyyhhmm(new Date(props?.value));
-      //     else return "NON";
-      //   },
-      // },
-      {
-        Header: "Pk Debut ",
-        accessor: "pkdebutBalayage",
+        Header: "Pk Début",
+        accessor: "pkDebut",
       },
       {
-        Header: "Pk Fin ",
-        accessor: "pkfinBalayage",
+        Header: "PK Fin",
+        accessor: "pkFin",
       },
       {
         Header: "Linéaire(m)",
         accessor: "lineaire",
       },
       {
-        Header: " H.Debut Balayage",
-        accessor: "heureDebutBalayage",
+        Header: "Heure Début",
+        accessor: "heureDebut",
       },
       {
-        Header: " H.Fin Balayage",
-        accessor: "heureFinBalayage",
+        Header: "Heure Fin",
+        accessor: "heureFin",
       },
+
       {
-        Header: "Localisation",
+        Header: "Localisation ",
         accessor: "localisation",
       },
 
       {
         Header: "Etat",
-        accessor: "etatBalayage",
+        accessor: "etatDesherbage",
         Cell: (props) => {
           return props.value === "Terminer" ? (
             <span className="bg-success rounded-pill p-1 text-white ">
@@ -210,7 +186,7 @@ const BalayageList = (props) => {
             <div>
               <span
                 style={{ cursor: "pointer" }}
-                onClick={() => openbalayage(props.row.id)}
+                onClick={() => openDesherbage(props.row.id)}
               >
                 <i className="far fa-edit action mr-2 text-info"></i>
               </span>
@@ -237,7 +213,7 @@ const BalayageList = (props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: balayages,
+      data: Desherbages,
     });
 
   return (
@@ -250,7 +226,7 @@ const BalayageList = (props) => {
           </li>
 
           <li className="breadcrumb-item active" aria-current="page">
-            Balayages
+            Desherbages
           </li>
         </ol>
       </nav>
@@ -300,8 +276,8 @@ const BalayageList = (props) => {
               shape="rounded"
               onChange={handlePageChange}
             />
-            <Link to={"/trace/balayages/add"}>
-              <button className="btn btn-primary">Ajout Balayage</button>
+            <Link to={"/trace/Desherbages/add"}>
+              <button className="btn btn-primary">Ajout Desherbage</button>
             </Link>
           </div>
           <table
@@ -359,8 +335,7 @@ const BalayageList = (props) => {
                 </button>
               </div>
               <div className="modal-body">
-                Vous allez supprimer cet évènement et tous ces remorquages et
-                details accident ?
+                Vous allez supprimer l'Desherbage ?
               </div>
               <div className="modal-footer">
                 <button
@@ -373,7 +348,7 @@ const BalayageList = (props) => {
                 <button
                   type="button"
                   data-dismiss="modal"
-                  onClick={deletebalayage}
+                  onClick={deleteDesherbage}
                   className="btn btn-danger"
                 >
                   Supprimer
@@ -386,4 +361,4 @@ const BalayageList = (props) => {
     </>
   );
 };
-export default BalayageList;
+export default DesherbageList;

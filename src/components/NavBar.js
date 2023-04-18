@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import authService from "../services/auth/authService";
 const NavBar = () => {
   let navigate = useNavigate();
@@ -48,7 +48,7 @@ const NavBar = () => {
         </form> */}
 
         <ul className="navbar-nav ms-auto d-flex flex-row">
-          <li className="nav-item dropdown">
+          {/* <li className="nav-item dropdown">
             <a
               className="nav-link me-3 me-lg-0 dropdown-toggle hidden-arrow"
               href="#"
@@ -82,15 +82,15 @@ const NavBar = () => {
                 </a>
               </li>
             </ul>
-          </li>
+          </li> */}
 
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a className="nav-link me-3 me-lg-0" href="#">
               <i className="fas fa-fill-drip"></i>
             </a>
-          </li>
+          </li> */}
 
-          <li className="nav-item me-3 me-lg-0">
+          {/* <li className="nav-item me-3 me-lg-0">
             <a className="nav-link" href="#">
               <i className="fab fa-github"></i>
             </a>
@@ -160,7 +160,7 @@ const NavBar = () => {
                 </a>
               </li>
             </ul>
-          </li>
+          </li> */}
 
           <li className="nav-item dropdown">
             <a
@@ -184,15 +184,15 @@ const NavBar = () => {
               aria-labelledby="navbarDropdownMenuLink"
             >
               <li>
-                <a className="dropdown-item" href="#">
-                  My profile
-                </a>
+                <Link to={"/profile"} className="dropdown-item" href="#">
+                  Mon profil
+                </Link>
               </li>
-              <li>
+              {/* <li>
                 <a className="dropdown-item" href="#">
                   Settings
                 </a>
-              </li>
+              </li> */}
               <li>
                 <button
                   className="dropdown-item"

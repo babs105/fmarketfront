@@ -153,12 +153,12 @@ const NettoyageList = (props) => {
         accessor: "pkfin",
       },
       {
-        Header: " Gare",
-        accessor: "gare",
+        Header: " Lieu",
+        accessor: "lieu",
       },
       {
-        Header: "Zone",
-        accessor: "zone",
+        Header: "Gare",
+        accessor: "gare",
       },
 
       {
@@ -285,7 +285,7 @@ const NettoyageList = (props) => {
             className="table table-sm table-striped table-bordered table-hover"
             {...getTableProps()}
           >
-            <thead className="text-center" style={{ fontSize: 14 }}>
+            <thead style={{ fontSize: 14 }}>
               {headerGroups.map((headerGroup) => (
                 <tr className="" {...headerGroup.getHeaderGroupProps()}>
                   {headerGroup.headers.map((column) => (

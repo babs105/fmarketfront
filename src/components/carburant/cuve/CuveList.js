@@ -148,15 +148,17 @@ const CuveList = (props) => {
     cuveService
       .getAll(params)
       .then((response) => {
+        console.log("response", response.data);
         const { cuves, totalPages } = response.data;
-
         setCuves(cuves);
         setCount(totalPages);
 
         console.log("response", response.data);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.log("error", error.response.status);
+        console.log("messsage", error.message);
+        // if (error.response.status === 403) navigate("/401");
       });
   };
 
@@ -173,8 +175,8 @@ const CuveList = (props) => {
         console.log(response.data);
         refreshList();
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 

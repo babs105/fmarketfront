@@ -54,6 +54,14 @@ import EditBalayage from "../components/trace/balayage/EditBalayage";
 import NettoyageList from "../components/trace/nettoyage/NettoyageList";
 import AddNettoyage from "../components/trace/nettoyage/AddNettoyage";
 import EditNettoyage from "../components/trace/nettoyage/EditNettoyage";
+import UserProfile from "../components/profile/UserProfile";
+import IntrusionList from "../components/trace/intrusion/IntrusionList";
+import AddIntrusion from "../components/trace/intrusion/AddIntrusion";
+import EditIntrusion from "../components/trace/intrusion/EditIntrusion";
+import DesherbageList from "../components/trace/desherbage/DesherbageList";
+import AddDesherbage from "../components/trace/desherbage/AddDesherbage";
+import EditDesherbage from "../components/trace/desherbage/EditDesherbage";
+import SearchEvenement from "../components/trace/evenement/SearchEvenement";
 
 const MainRoute = ({ user, pth }) => {
   useEffect(() => {
@@ -69,9 +77,14 @@ const MainRoute = ({ user, pth }) => {
         <Route index element={<Login user={user} />} />
         <Route path="/login" element={<Login user={user} />} />
         <Route path="/register" element={<Register />} />
+
         <Route element={<HomeLayout user={user} />}>
           <Route path="/home" element={<Home />} />
+
           {/* <Route path="dashboard" element={<Dashboard />} /> */}
+        </Route>
+        <Route element={<PrivatedRoute user={user} />}>
+          <Route path="/profile" element={<UserProfile user={user} />} />
         </Route>
         {/* //tracer */}
         <Route
@@ -87,6 +100,7 @@ const MainRoute = ({ user, pth }) => {
           <Route path="trace/evenements" element={<EvenementList />} />
           <Route path="trace/evenements/add" element={<AddEvenement />} />
           <Route path="trace/evenements/:id" element={<Evenement />} />
+          <Route path="trace/evenements/search" element={<SearchEvenement />} />
           <Route
             path="trace/event/remorquage/add/:id"
             element={<AddRemorquage />}
@@ -118,6 +132,17 @@ const MainRoute = ({ user, pth }) => {
           <Route path="trace/nettoyages" element={<NettoyageList />} />
           <Route path="trace/nettoyages/add" element={<AddNettoyage />} />
           <Route path="trace/nettoyages/edit/:id" element={<EditNettoyage />} />
+
+          <Route path="trace/intrusions" element={<IntrusionList />} />
+          <Route path="trace/intrusions/add" element={<AddIntrusion />} />
+          <Route path="trace/intrusions/edit/:id" element={<EditIntrusion />} />
+
+          <Route path="trace/desherbages" element={<DesherbageList />} />
+          <Route path="trace/desherbages/add" element={<AddDesherbage />} />
+          <Route
+            path="trace/desherbages/edit/:id"
+            element={<EditDesherbage />}
+          />
         </Route>
         {/* carburant */}
         <Route element={<PrivatedCarbuRoute user={user} />}>

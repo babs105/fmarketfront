@@ -1,11 +1,11 @@
 import http from "../../axios/http-common";
 
 const register = (data) => {
-  return http.post("/security/user/signup", { ...data });
+  return http.post("/public/user/signup", { ...data });
 };
 
 const login = (data) => {
-  return http.post("/security/user/signin", { ...data }).then((response) => {
+  return http.post("/public/user/signin", { ...data }).then((response) => {
     if (response.data.accessToken) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -25,7 +25,10 @@ const getAll = (params) => {
   return http.get("/security/users", { params });
 };
 const get = (id) => {
-  return http.get(`/security/user/${id}`);
+  return http.get(`/private/user/${id}`);
+};
+const getByUsername = (username) => {
+  return http.get(`/private/user/username/${username}`);
 };
 const getOtherRoles = (id) => {
   return http.get(`/security/user/${id}/otherroles`);
@@ -68,6 +71,7 @@ const authService = {
   getOtherRoles,
   assignRole,
   unassignRole,
+  getByUsername,
 };
 
 export default authService;

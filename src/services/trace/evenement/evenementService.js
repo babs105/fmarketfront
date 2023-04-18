@@ -22,6 +22,9 @@ const remove = (id) => {
 const removeAll = () => {
   return http.delete(`/trace/evenements`);
 };
+const search = (params) => {
+  return http.post("/trace/evenements/search", params);
+};
 
 const findByTitle = (title) => {
   return http.get(`/trace/evenements?title=${title}`);
@@ -35,6 +38,7 @@ const evenementService = {
   remove,
   removeAll,
   findByTitle,
+  search,
 };
 
 export default evenementService;

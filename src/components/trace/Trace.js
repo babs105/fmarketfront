@@ -81,7 +81,7 @@ const Trace = () => {
               <h5 className="card-header">Intrusion</h5>
               <div className="card-body">
                 {/* <p className="card-text">Suivi Intrusion.</p> */}
-                <Link to={"/trace/remorquages"} className="btn btn-primary">
+                <Link to={"/trace/intrusions"} className="btn btn-primary">
                   Gestion des intrusions
                 </Link>
               </div>
@@ -92,7 +92,7 @@ const Trace = () => {
               <h5 className="card-header">Désherbage</h5>
               <div className="card-body">
                 {/* <p className="card-text">Suivi Intrusion.</p> */}
-                <Link to={"/trace/desherbage"} className="btn btn-primary">
+                <Link to={"/trace/desherbages"} className="btn btn-primary">
                   Gestion du Désherbage
                 </Link>
               </div>
@@ -108,38 +108,42 @@ const Trace = () => {
           <div className="col-sm-4">
             <div className="card">
               <div className="card-body">
-                {/* <p className="card-text">Les Accidents</p> */}
                 <Link
                   activeclassname="active"
                   to={"/trace/detailAccidents/search"}
                   className="btn btn-primary"
                 >
-                  Rechercher Accidents
+                  Les Accidents
                 </Link>
               </div>
-              {/* <div className="card-body">
-                <p className="card-text">Suivi Balayage du Tracé.</p>
-                <Link
-                  activeclassname="active"
-                  to={"/trace/evenements"}
-                  className="btn btn-primary"
-                >
-                  Gestion des Balayages
-                </Link>
-              </div> */}
             </div>
           </div>
-          {/* <div className="col-sm-4"> */}
-          <div className="card">
-            <div className="card-body">
-              {/* <p className="card-text">Les Remorquages</p> */}
-              <Link
-                activeclassname="active"
-                to={"/trace/remorquages/search"}
-                className="btn btn-primary"
-              >
-                Rechercher Remorquages
-              </Link>
+          <div className="col-sm-4">
+            <div className="card">
+              <div className="card-body">
+                {/* <p className="card-text">Les Remorquages</p> */}
+                <Link
+                  activeclassname="active"
+                  to={"/trace/remorquages/search"}
+                  className="btn btn-primary"
+                >
+                  Les Remorquages
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-4">
+            <div className="card">
+              <div className="card-body">
+                {/* <p className="card-text">Les Remorquages</p> */}
+                <Link
+                  activeclassname="active"
+                  to={"/trace/evenements/search"}
+                  className="btn btn-primary"
+                >
+                  Rechercher Evenements
+                </Link>
+              </div>
             </div>
             {/* <div className="card-body">
                 <p className="card-text">Suivi Balayage du Tracé.</p>

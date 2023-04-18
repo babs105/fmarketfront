@@ -137,7 +137,9 @@ const EditBalayage = (props) => {
     console.log("detail  bal");
     if (id) getbalayage(id);
   }, [id]);
-
+  const rechargerBalaayage = () => {
+    getbalayage(id);
+  };
   const onSubmit = (data) => {
     setMessage("");
     setLoading(true);
@@ -467,7 +469,7 @@ const EditBalayage = (props) => {
 
               <button
                 type="reset"
-                onClick={reset}
+                onClick={rechargerBalaayage}
                 className="btn btn-warning float-right"
               >
                 Annuler

@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import Pagination from "@material-ui/lab/Pagination";
-import balayageService from "../../../services/trace/balayage/balayageService";
+import intrusionService from "../../../services/trace/intrusion/intrusionService";
 import { useTable } from "react-table";
-import {
-  formatDateDDmmyyyy,
-  formatDateDDmmyyyyhhmm,
-} from "../../../utils/formatDate";
+import { formatDateDDmmyyyy } from "../../../utils/formatDate";
 
-const BalayageList = (props) => {
+const IntrusionList = (props) => {
   // const history = useNavigate();
   let navigate = useNavigate();
-  const [balayages, setBalayages] = useState([]);
+  const [intrusions, setIntrusions] = useState([]);
   const [idDelete, setIdDelete] = useState();
-  const [showModal, setShowModal] = useState(false);
-  const balayagesRef = useRef();
-  balayagesRef.current = balayages;
+  const intrusionsRef = useRef();
+  intrusionsRef.current = intrusions;
 
   const [searchTitle, setSearchTitle] = useState("");
 
@@ -28,7 +24,7 @@ const BalayageList = (props) => {
   const onChangeSearchTitle = (e) => {
     const searchTitle = e.target.value;
     setSearchTitle(searchTitle);
-    //   retrievebalayages();
+    //   retrieveintrusions();
   };
 
   const getRequestParams = (searchTitle, page, pageSize) => {
@@ -49,16 +45,16 @@ const BalayageList = (props) => {
     return params;
   };
 
-  const retrievebalayages = () => {
+  const retrieveintrusions = () => {
     const params = getRequestParams(searchTitle, page, pageSize);
     console.log("params", params);
 
-    balayageService
+    intrusionService
       .getAll(params)
       .then((response) => {
-        const { balayages, totalPages } = response.data;
+        const { intrusions, totalPages } = response.data;
 
-        setBalayages(balayages);
+        setIntrusions(intrusions);
         setCount(totalPages);
 
         console.log(response.data);
@@ -68,14 +64,14 @@ const BalayageList = (props) => {
       });
   };
 
-  useEffect(retrievebalayages, [page, pageSize], searchTitle);
+  useEffect(retrieveintrusions, [page, pageSize], searchTitle);
 
   const refreshList = () => {
-    retrievebalayages();
+    retrieveintrusions();
   };
 
-  const removeAllbalayages = () => {
-    balayageService
+  const removeAllintrusions = () => {
+    intrusionService
       .removeAll()
       .then((response) => {
         console.log(response.data);
@@ -88,28 +84,28 @@ const BalayageList = (props) => {
 
   const findByTitle = () => {
     setPage(1);
-    retrievebalayages();
+    retrieveintrusions();
   };
 
-  const openbalayage = (rowIndex) => {
-    const id = balayagesRef.current[rowIndex].id;
+  const openintrusion = (rowIndex) => {
+    const id = intrusionsRef.current[rowIndex].id;
 
-    navigate("/trace/balayages/edit/" + id);
+    navigate("/trace/intrusions/edit/" + id);
   };
 
-  const deletebalayage = () => {
-    const id = balayagesRef.current[idDelete]?.id;
+  const deleteintrusion = () => {
+    const id = intrusionsRef.current[idDelete]?.id;
     console.log("Idf", id);
     console.log("rowIndexf", idDelete);
-    balayageService
+    intrusionService
       .remove(id)
       .then((response) => {
-        // navigate("/trace/balayages");
+        // navigate("/trace/intrusions");
 
-        let newbalayages = [...balayagesRef.current];
-        newbalayages.splice(idDelete, 1);
+        let newintrusions = [...intrusionsRef.current];
+        newintrusions.splice(idDelete, 1);
 
-        setBalayages(newbalayages);
+        setIntrusions(newintrusions);
       })
       .catch((e) => {
         console.log(e);
@@ -124,6 +120,7 @@ const BalayageList = (props) => {
     setPageSize(event.target.value);
     setPage(1);
   };
+
   const columns = useMemo(
     () => [
       {
@@ -134,59 +131,35 @@ const BalayageList = (props) => {
         },
       },
       {
-        Header: "Type Balayage",
-        accessor: "typeBalayage",
+        Header: "Type intrusion",
+        accessor: "typeIntrusion",
       },
       {
-        Header: "Type Balisage",
-        accessor: "typeBalisage",
-      },
-      // {
-      //   Header: "Date/H.Pose",
-      //   accessor: "datePose",
-      //   Cell: (props) => {
-      //     if (props?.value)
-      //       return formatDateDDmmyyyyhhmm(new Date(props?.value));
-      //     else return "NON";
-      //   },
-      // },
-      // {
-      //   Header: "Date/H.DéPose",
-      //   accessor: "dateDepose",
-      //   Cell: (props) => {
-      //     if (props?.value)
-      //       return formatDateDDmmyyyyhhmm(new Date(props?.value));
-      //     else return "NON";
-      //   },
-      // },
-      {
-        Header: "Pk Debut ",
-        accessor: "pkdebutBalayage",
+        Header: "Heure ",
+        accessor: "heureAnnonce",
       },
       {
-        Header: "Pk Fin ",
-        accessor: "pkfinBalayage",
+        Header: "Emis Par ",
+        accessor: "emisPar",
       },
+
       {
-        Header: "Linéaire(m)",
-        accessor: "lineaire",
-      },
-      {
-        Header: " H.Debut Balayage",
-        accessor: "heureDebutBalayage",
-      },
-      {
-        Header: " H.Fin Balayage",
-        accessor: "heureFinBalayage",
-      },
-      {
-        Header: "Localisation",
+        Header: "Localisation ",
         accessor: "localisation",
       },
 
       {
+        Header: " Action Menée",
+        accessor: "action",
+      },
+      {
+        Header: "Nombre",
+        accessor: "nbre",
+      },
+
+      {
         Header: "Etat",
-        accessor: "etatBalayage",
+        accessor: "etatIntrusion",
         Cell: (props) => {
           return props.value === "Terminer" ? (
             <span className="bg-success rounded-pill p-1 text-white ">
@@ -210,7 +183,7 @@ const BalayageList = (props) => {
             <div>
               <span
                 style={{ cursor: "pointer" }}
-                onClick={() => openbalayage(props.row.id)}
+                onClick={() => openintrusion(props.row.id)}
               >
                 <i className="far fa-edit action mr-2 text-info"></i>
               </span>
@@ -237,7 +210,7 @@ const BalayageList = (props) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
       columns,
-      data: balayages,
+      data: intrusions,
     });
 
   return (
@@ -250,7 +223,7 @@ const BalayageList = (props) => {
           </li>
 
           <li className="breadcrumb-item active" aria-current="page">
-            Balayages
+            intrusions
           </li>
         </ol>
       </nav>
@@ -300,8 +273,8 @@ const BalayageList = (props) => {
               shape="rounded"
               onChange={handlePageChange}
             />
-            <Link to={"/trace/balayages/add"}>
-              <button className="btn btn-primary">Ajout Balayage</button>
+            <Link to={"/trace/intrusions/add"}>
+              <button className="btn btn-primary">Ajout intrusion</button>
             </Link>
           </div>
           <table
@@ -359,8 +332,7 @@ const BalayageList = (props) => {
                 </button>
               </div>
               <div className="modal-body">
-                Vous allez supprimer cet évènement et tous ces remorquages et
-                details accident ?
+                Vous allez supprimer l'intrusion ?
               </div>
               <div className="modal-footer">
                 <button
@@ -373,7 +345,7 @@ const BalayageList = (props) => {
                 <button
                   type="button"
                   data-dismiss="modal"
-                  onClick={deletebalayage}
+                  onClick={deleteintrusion}
                   className="btn btn-danger"
                 >
                   Supprimer
@@ -386,4 +358,4 @@ const BalayageList = (props) => {
     </>
   );
 };
-export default BalayageList;
+export default IntrusionList;
