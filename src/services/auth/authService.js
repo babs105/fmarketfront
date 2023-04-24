@@ -6,7 +6,7 @@ const register = (data) => {
 
 const login = (data) => {
   return http.post("/public/user/signin", { ...data }).then((response) => {
-    if (response.data.accessToken) {
+    if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data));
     }
     return response.data;

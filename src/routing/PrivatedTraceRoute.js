@@ -4,11 +4,7 @@ import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
 import AccessDined from "../page/error/AccessDined";
 
-const PrivatedTraceRoute = ({
-  children,
-
-  user,
-}) => {
+const PrivatedTraceRoute = ({ children, user }) => {
   const location = useLocation();
   let navigate = useNavigate();
   // useEffect(() => {

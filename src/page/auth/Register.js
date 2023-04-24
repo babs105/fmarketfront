@@ -47,15 +47,16 @@ function Register() {
         setSuccessful(true);
       },
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        console.log("Error", error.response);
+        const resMessage = error.response && error.response.data;
         setLoading(false);
         setMessage(resMessage);
         setSuccessful(false);
+        // (error.response &&
+        //   error.response.data &&
+        //   error.response.data.message) ||
+        // error.message ||
+        // error.toString();
       }
     );
   };

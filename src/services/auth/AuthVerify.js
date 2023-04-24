@@ -22,7 +22,7 @@ const AuthVerify = () => {
     // console.log("USER TEST TOKEN");
 
     if (user) {
-      const decodedJwt = parseJwt(user.accessToken);
+      const decodedJwt = parseJwt(user.token);
       console.log("USER  TOKEN", decodedJwt);
       if (decodedJwt.exp * 1000 < Date.now()) {
         console.log("expier");

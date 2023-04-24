@@ -59,6 +59,7 @@ function Login({ user }) {
     console.log(data);
     authService.login(data).then(
       () => {
+        // console.log("USER", response.data);
         console.log("OK login");
         navigate("/home");
         setLoading(false);
@@ -66,12 +67,14 @@ function Login({ user }) {
         window.location.reload();
       },
       (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
+        console.log("Error", error);
+        const resMessage = error.response && error.response.data;
+        // const resMessage =
+        //   (error.response &&
+        //     error.response.data &&
+        //     error.response.data.message) ||
+        //   error.message ||
+        //   error.toString();
 
         setLoading(false);
         setSuccessful(false);
