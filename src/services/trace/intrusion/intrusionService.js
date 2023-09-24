@@ -1,7 +1,7 @@
-import http from "../../../axios/http-common";
+import { http } from "../../../axios/http-common";
 
 const getAll = (params) => {
-  return http.get("/trace/intrusions", { params });
+  return http.get("/trace/intrusions", params);
 };
 const get = (id) => {
   return http.get(`/trace/intrusions/${id}`);

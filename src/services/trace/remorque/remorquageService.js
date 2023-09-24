@@ -1,7 +1,7 @@
-import http from "../../../axios/http-common";
+import { http } from "../../../axios/http-common";
 
 const getAll = (params) => {
-  return http.get("/trace/remorquages", { params });
+  return http.get("/trace/remorquages", params);
 };
 const get = (id) => {
   return http.get(`/trace/remorquages/${id}`);

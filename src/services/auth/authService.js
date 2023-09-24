@@ -1,60 +1,90 @@
-import http from "../../axios/http-common";
+import { useDispatch } from "react-redux";
+import { http } from "../../axios/http-common";
 
 const register = (data) => {
-  return http.post("/public/user/signup", { ...data });
+  return http.put("/public/auth/register", { ...data });
 };
 
 const login = (data) => {
-  return http.post("/public/user/signin", { ...data }).then((response) => {
+  return http.post("/public/auth/login", { ...data }).then((response) => {
     if (response.data) {
-      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("dataUser", JSON.stringify(response.data));
     }
     return response.data;
   });
 };
 
 const logout = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("dataUser");
+};
+const isLogged = () => {
+  const token = JSON.parse(localStorage.getItem("dataUser"));
+  return !!token;
+};
+
+const hasRole = (roles, role) => {
+  return roles.includes(role);
+};
+const isTokenExpired = (token) => {
+  try {
+    const decodedJwt = JSON.parse(Buffer.from(token.split(".")[1], "base64"));
+    // return JSON.parse(atob(token.split(".")[1]));
+    console.log("USER  TOKEN", decodedJwt);
+    if (decodedJwt.exp * 1000 < Date.now()) {
+      console.log("expier");
+      localStorage.removeItem("user");
+      return true;
+    } else {
+      console.log("not expier");
+      return false;
+    }
+  } catch (error) {
+    // return null;
+    console.log("EEroor", error.response);
+  }
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("dataUser"));
+};
+const getToken = () => {
+  const token = JSON.parse(localStorage.getItem("dataUser")).token;
+  return token;
 };
 
-const getAll = (params) => {
-  return http.get("/security/users", { params });
-};
 const get = (id) => {
-  return http.get(`/private/user/${id}`);
-};
-const getByUsername = (username) => {
-  return http.get(`/private/user/username/${username}`);
-};
-const getOtherRoles = (id) => {
-  return http.get(`/security/user/${id}/otherroles`);
+  return http.get(`/private/users/${id}`);
 };
 
 const update = (id, data) => {
-  return http.put(`/security/user/update/${id}`, data);
+  return http.patch(`/private/users/${id}`, data);
+};
+// const getByUsername = (username) => {
+//   return http.get(`/private/user/username/${username}`);
+// };
+
+const getAllUsersPage = (params) => {
+  return http.get("/admin/users", { params });
+};
+const getOtherRoles = (id) => {
+  return http.get(`/admin/users/otherrole/${id}`);
 };
 
+const trash = (id) => {
+  return http.delete(`/admin/users/trash/${id}`);
+};
+const untrash = (id) => {
+  return http.post(`/admin/users/untrash/${id}`);
+};
 const remove = (id) => {
-  return http.delete(`/security/user/delete/${id}`);
+  return http.delete(`/admin/users/delete/${id}`);
 };
 
-const removeAll = () => {
-  return http.delete(`/security/user`);
+const assignRole = (data) => {
+  return http.post("/admin/users/assignrole", data);
 };
-
-const assignRole = (userId, roleId) => {
-  return http.get(`/security/role/assign/${userId}/${roleId}`);
-};
-const unassignRole = (userId, roleId) => {
-  return http.get(`/security/role/unassign/${userId}/${roleId}`);
-};
-
-const findByTitle = (title) => {
-  return http.get(`/security/user?title=${title}`);
+const unassignRole = (data) => {
+  return http.post("/admin/users/unassignrole", data);
 };
 
 const authService = {
@@ -62,16 +92,20 @@ const authService = {
   login,
   logout,
   getCurrentUser,
-  getAll,
+  getAllUsersPage,
   get,
   update,
   remove,
-  removeAll,
-  findByTitle,
+  trash,
+  untrash,
   getOtherRoles,
   assignRole,
   unassignRole,
-  getByUsername,
+  // getByUsername,
+  isLogged,
+  isTokenExpired,
+  hasRole,
+  getToken,
 };
 
 export default authService;

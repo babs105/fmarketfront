@@ -1,16 +1,13 @@
 import { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
-import AccessDined from "../page/error/AccessDined";
+import { Route, Routes } from "react-router-dom";
 
-const PrivatedSecurityRoute = ({
-  children,
+import Layout from "../components/layout/Layout";
+import Security from "../components/security/Security";
+import UsersList from "../components/Private/users/UsersList";
+import UserEdit from "../components/Private/users/UserEdit";
+import RolesList from "../components/Private/roles/RolesList";
 
-  user,
-}) => {
-  const location = useLocation();
-  let navigate = useNavigate();
+const PrivatedSecurityRoute = () => {
   // useEffect(() => {
   //   console.log("private route" + redirectPath);
   //   console.log("permet" + isAllowed);
@@ -25,25 +22,22 @@ const PrivatedSecurityRoute = ({
   //   // navigate(redirectPath);
   //   return <Navigate to={redirectPath} replace />;
   // }
-  if (!user?.roles.includes("SUPER_ADMIN")) {
-    console.log("redirection " + user);
-    // navigate(redirectPath);
-    // return <Navigate to={"/401"} replace />;
-    return <AccessDined />;
-  }
+  // if (!user?.roles.includes("SUPER_ADMIN")) {
+  //   console.log("redirection " + user);
+  //   // navigate(redirectPath);
+  //   // return <Navigate to={"/401"} replace />;
+  //   return <AccessDined />;
+  // }
 
   return (
-    <div>
-      <header>
-        <SideBar />
-        <NavBar />
-      </header>
-      <main style={{ marginTop: "58px" }}>
-        <div className="container pt-4 card">
-          {children ? children : <Outlet />}
-        </div>
-      </main>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Security />} />
+        <Route path="users" element={<UsersList />} />
+        <Route path="users/:id" element={<UserEdit />} />
+        <Route path="roles" element={<RolesList />} />
+      </Route>
+    </Routes>
   );
 };
 export default PrivatedSecurityRoute;

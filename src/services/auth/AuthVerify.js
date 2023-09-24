@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { redirect, useLocation, useNavigate } from "react-router-dom";
-
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import authService from "./authService";
+import SessionExpire from "../../page/error/SessionExpire";
 
 const parseJwt = (token) => {
   try {
     return JSON.parse(Buffer.from(token.split(".")[1], "base64"));
     // return JSON.parse(atob(token.split(".")[1]));
-  } catch (e) {
-    return null;
+  } catch (error) {
+    // return null;
+    console.log("EEroor", error.response);
   }
 };
 
@@ -16,19 +18,19 @@ const AuthVerify = () => {
   let location = useLocation();
   let navigate = useNavigate();
 
-  useEffect(() => {
-    //   const user = JSON.parse(localStorage.getItem("user"));
-    const user = authService.getCurrentUser();
-    // console.log("USER TEST TOKEN");
+  const userState = useSelector((state) => state.User);
+  const dispatch = useDispatch();
 
-    if (user) {
-      const decodedJwt = parseJwt(user.token);
+  useEffect(() => {
+    if (userState?.user?.token) {
+      console.log("TOKEN", userState?.user?.token);
+      const decodedJwt = parseJwt(userState?.user?.token);
       console.log("USER  TOKEN", decodedJwt);
       if (decodedJwt.exp * 1000 < Date.now()) {
         console.log("expier");
         authService.logout();
-        navigate("/expire");
-        //   return <SessionExpire />;
+        navigate("/error/expire");
+        // return <SessionExpire />;
       }
     }
   }, [location]);

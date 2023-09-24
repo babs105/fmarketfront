@@ -1,16 +1,12 @@
 import { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
-import AccessDined from "../page/error/AccessDined";
+import { Routes, Route } from "react-router-dom";
+import Carburant from "../components/carburant/Carburant";
+import CuveList from "../components/carburant/cuve/CuveList";
+import AddRavitaillement from "../components/carburant/ravitaillement/AddRavitaillement";
+import RavitaillementList from "../components/carburant/ravitaillement/RavitaillementList";
+import Layout from "../components/layout/Layout";
 
-const PrivatedCarbuRoute = ({
-  children,
-
-  user,
-}) => {
-  const location = useLocation();
-  let navigate = useNavigate();
+const PrivatedCarbuRoute = () => {
   // useEffect(() => {
   //   console.log("private route" + redirectPath);
   //   console.log("permet" + isAllowed);
@@ -25,25 +21,22 @@ const PrivatedCarbuRoute = ({
   //   // navigate(redirectPath);
   //   return <Navigate to={redirectPath} replace />;
   // }
-  if (!user?.roles.includes("USER_CARBURANT")) {
-    console.log("redirection " + user);
-    // navigate(redirectPath);
-    // return <Navigate to={"/401"} replace />;
-    return <AccessDined />;
-  }
+  // if (!user?.roles.includes("USER_CARBURANT")) {
+  //   console.log("redirection " + user);
+  //   // navigate(redirectPath);
+  //   // return <Navigate to={"/401"} replace />;
+  //   return <AccessDined />;
+  // }
 
   return (
-    <div>
-      <header>
-        <SideBar />
-        <NavBar />
-      </header>
-      <main style={{ marginTop: "58px" }}>
-        <div className="container pt-4 card">
-          {children ? children : <Outlet />}
-        </div>
-      </main>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Carburant />} />
+        <Route path="cuves" element={<CuveList />} />
+        <Route path="ravitaillements" element={<RavitaillementList />} />
+        <Route path="ravitaillements/add" element={<AddRavitaillement />} />
+      </Route>
+    </Routes>
   );
 };
 export default PrivatedCarbuRoute;

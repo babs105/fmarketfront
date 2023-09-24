@@ -1,16 +1,13 @@
 import { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
-import AccessDined from "../page/error/AccessDined";
+import { Routes, Route } from "react-router-dom";
 
-const PrivatedParamvhlRoute = ({
-  children,
+import Layout from "../components/layout/Layout";
+import Vehicule from "../components/param/vehicule/Vehicule";
+import VehiculeList from "../components/param/vehicule/VehiculeList";
+import AddVehicule from "../components/param/vehicule/AddVehicule";
+import VehiculeAffectationList from "../components/param/vehicule/VehiculeAffectationList";
 
-  user,
-}) => {
-  const location = useLocation();
-  let navigate = useNavigate();
+const PrivatedParamvhlRoute = () => {
   // useEffect(() => {
   //   console.log("private route" + redirectPath);
   //   console.log("permet" + isAllowed);
@@ -25,25 +22,22 @@ const PrivatedParamvhlRoute = ({
   //   // navigate(redirectPath);
   //   return <Navigate to={redirectPath} replace />;
   // }
-  if (!user?.roles.includes("ADMIN_PARA_VHL")) {
-    console.log("redirection " + user);
-    // navigate(redirectPath);
-    // return <Navigate to={"/401"} replace />;
-    return <AccessDined />;
-  }
+  // if (!user?.roles.includes("ADMIN_PARA_VHL")) {
+  //   console.log("redirection " + user);
+  //   // navigate(redirectPath);
+  //   // return <Navigate to={"/401"} replace />;
+  //   return <AccessDined />;
+  // }
 
   return (
-    <div>
-      <header>
-        <SideBar />
-        <NavBar />
-      </header>
-      <main style={{ marginTop: "58px" }}>
-        <div className="container pt-4 card">
-          {children ? children : <Outlet />}
-        </div>
-      </main>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Vehicule />} />
+        <Route path="vehicules" element={<VehiculeList />} />
+        <Route path="vehicules/add" element={<AddVehicule />} />
+        <Route path="affectations" element={<VehiculeAffectationList />} />
+      </Route>
+    </Routes>
   );
 };
 export default PrivatedParamvhlRoute;

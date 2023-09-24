@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
-import AccessDined from "../page/error/AccessDined";
+import AccessDined from "../components/error/AccessDined";
 
 const HomeLayout = ({ children, user }) => {
   const location = useLocation();
@@ -14,7 +14,6 @@ const HomeLayout = ({ children, user }) => {
   //   }
   // }, []);
   if (!user) {
-    // navigate("/login");\
     console.log("user not exist");
     return <Navigate to={"/login"} replace />;
   }

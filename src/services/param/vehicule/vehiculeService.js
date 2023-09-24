@@ -1,4 +1,4 @@
-import http from "../../../axios/http-common";
+import { http } from "../../../axios/http-common";
 
 const getAll = (params) => {
   return http.get("/paramvhl/vehicles", { params });

@@ -1,27 +1,30 @@
 {
-  "name": "backofficefront",
+  "name": "frontapiexpress",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@hookform/resolvers": "^2.4.0",
     "@fortawesome/fontawesome-free": "^5.15.2",
+    "@hookform/resolvers": "^2.4.0",
     "@material-ui/core": "^4.11.3",
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "react-hook-form": "^7.4.2",
-    "yup": "^0.32.9",
     "axios": "^0.26.1",
     "bootstrap": "^4.6.2",
     "jquery": "^3.5.1",
     "popper.js": "^1.16.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.44.3",
+    "react-redux": "^8.0.5",
     "react-router-dom": "^6.2.2",
     "react-scripts": "4.0.3",
     "react-table": "^7.6.3",
-    "web-vitals": "^2.1.4"
+    "uuid": "^9.0.0",
+    "web-vitals": "^2.1.4",
+    "yup": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
@@ -29,7 +32,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8080",
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -1,39 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  Routes,
-  Route,
-  NavLink,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
-import Carburant from "../components/carburant/Carburant";
-import CuveList from "../components/carburant/cuve/CuveList";
+import { Router, Routes, Route } from "react-router-dom";
 
-import AddEvenement from "../components/trace/evenement/AddEvenement";
-import Evenement from "../components/trace/evenement/Evenement";
-import EvenementList from "../components/trace/evenement/EvenementList";
-import Trace from "../components/trace/Trace";
-import Home from "../page/Home";
+import Home from "../components/Private/home/Home";
 import Login from "../page/auth/Login";
 import Register from "../page/auth/Register";
-import PrivatedRoute from "./PrivatedRoute";
-import AccessDined from "../page/error/AccessDined";
+import PrivatedRoute from "./PrivatedRoute2";
+import AccessDined from "../components/error/AccessDined";
 import HomeLayout from "./HomeLayout";
-import AddRemorquage from "../components/trace/evenement/AddRemorquage";
-import AddDetailAccident from "../components/trace/evenement/AddDetailAccident";
-import EditRemorquage from "../components/trace/evenement/EditRemorquage";
-import EditDetailAccident from "../components/trace/evenement/EditDetailAccident";
-import SearchRemorquage from "../components/trace/remorquage/SearchRemorquage";
-import SearchDetailAccident from "../components/trace/detailAccident/SearchDetailAccident";
 
 import AuthVerify from "../services/auth/AuthVerify";
 import Security from "../components/security/Security";
-import UsersList from "../components/security/users/UsersList";
-import UserEdit from "../components/security/users/UserEdit";
+import UsersList from "../components/Private/users/UsersList";
+import UserEdit from "../components/Private/users/UserEdit";
 import SessionExpire from "../page/error/SessionExpire";
 import PrivatedTraceRoute from "./PrivatedTraceRoute";
-import RolesList from "../components/security/roles/RolesList";
+import RolesList from "../components/Private/roles/RolesList";
 import Vehicule from "../components/param/vehicule/Vehicule";
 import VehiculeList from "../components/param/vehicule/VehiculeList";
 import ParcAuto from "../components/parcauto/ParcAuto";
@@ -48,22 +29,9 @@ import ReportTrace from "../components/report/trace/ReportTrace";
 import EvenementReport from "../components/report/trace/evenementReport/EvenementReport";
 import PrivatedReportTraceRoute from "./PrivatedReportTraceRoute";
 import PrivatedParamvhlRoute from "./PrivatedParamvhlRoute";
-import BalayageList from "../components/trace/balayage/BalayageList";
-import AddBalayage from "../components/trace/balayage/AddBalayage";
-import EditBalayage from "../components/trace/balayage/EditBalayage";
-import NettoyageList from "../components/trace/nettoyage/NettoyageList";
-import AddNettoyage from "../components/trace/nettoyage/AddNettoyage";
-import EditNettoyage from "../components/trace/nettoyage/EditNettoyage";
 import UserProfile from "../components/profile/UserProfile";
-import IntrusionList from "../components/trace/intrusion/IntrusionList";
-import AddIntrusion from "../components/trace/intrusion/AddIntrusion";
-import EditIntrusion from "../components/trace/intrusion/EditIntrusion";
-import DesherbageList from "../components/trace/desherbage/DesherbageList";
-import AddDesherbage from "../components/trace/desherbage/AddDesherbage";
-import EditDesherbage from "../components/trace/desherbage/EditDesherbage";
-import SearchEvenement from "../components/trace/evenement/SearchEvenement";
 
-const MainRoute = ({ user, pth }) => {
+const MainRoute = ({ user }) => {
   useEffect(() => {
     console.log("User " + user);
   }, []);
@@ -73,117 +41,32 @@ const MainRoute = ({ user, pth }) => {
   // };
   return (
     <div>
+      {/* <Router> </Router> */}
       <Routes>
-        <Route index element={<Login user={user} />} />
+        {/* <Route index element={<Login user={user} />} />
         <Route path="/login" element={<Login user={user} />} />
-        <Route path="/register" element={<Register />} />
-
-        <Route element={<HomeLayout user={user} />}>
-          <Route path="/home" element={<Home />} />
-
-          {/* <Route path="dashboard" element={<Dashboard />} /> */}
-        </Route>
-        <Route element={<PrivatedRoute user={user} />}>
+        <Route path="/register" element={<Register />} /> */}
+        {/* <Route element={<PrivatedRoute user={user} />}>
           <Route path="/profile" element={<UserProfile user={user} />} />
         </Route>
-        {/* //tracer */}
-        <Route
-          element={
-            <PrivatedTraceRoute
-              // redirectPath={"/401"}
-              // isAllowed={user !== undefined && user?.roles.includes("USER")}
-              user={user}
-            />
-          }
-        >
-          <Route path="trace" element={<Trace />} />
-          <Route path="trace/evenements" element={<EvenementList />} />
-          <Route path="trace/evenements/add" element={<AddEvenement />} />
-          <Route path="trace/evenements/:id" element={<Evenement />} />
-          <Route path="trace/evenements/search" element={<SearchEvenement />} />
-          <Route
-            path="trace/event/remorquage/add/:id"
-            element={<AddRemorquage />}
-          />
-          <Route
-            path="trace/event/remorquage/edit/:id"
-            element={<EditRemorquage />}
-          />
-          <Route
-            path="trace/event/detailAccident/add/:id"
-            element={<AddDetailAccident />}
-          />
-          <Route
-            path="trace/event/detailAccident/edit/:id"
-            element={<EditDetailAccident />}
-          />
-          <Route
-            path="trace/remorquages/search"
-            element={<SearchRemorquage />}
-          />
-          <Route
-            path="trace/detailAccidents/search"
-            element={<SearchDetailAccident />}
-          />
-          <Route path="trace/balayages" element={<BalayageList />} />
-          <Route path="trace/balayages/add" element={<AddBalayage />} />
-          <Route path="trace/balayages/edit/:id" element={<EditBalayage />} />
 
-          <Route path="trace/nettoyages" element={<NettoyageList />} />
-          <Route path="trace/nettoyages/add" element={<AddNettoyage />} />
-          <Route path="trace/nettoyages/edit/:id" element={<EditNettoyage />} />
+        <Route element={<HomeLayout user={user} />}>
+          <Route path="/home" element={<Home />} /> */}
 
-          <Route path="trace/intrusions" element={<IntrusionList />} />
-          <Route path="trace/intrusions/add" element={<AddIntrusion />} />
-          <Route path="trace/intrusions/edit/:id" element={<EditIntrusion />} />
+        {/* <Route path="dashboard" element={<Dashboard />} /> */}
+        {/* </Route> */}
 
-          <Route path="trace/desherbages" element={<DesherbageList />} />
-          <Route path="trace/desherbages/add" element={<AddDesherbage />} />
-          <Route
-            path="trace/desherbages/edit/:id"
-            element={<EditDesherbage />}
-          />
-        </Route>
-        {/* carburant */}
-        <Route element={<PrivatedCarbuRoute user={user} />}>
-          <Route path="carburant" element={<Carburant />} />
-          <Route path="carburant/cuves" element={<CuveList />} />
-          <Route
-            path="carburant/ravitaillements"
-            element={<RavitaillementList />}
-          />
-          <Route
-            path="carburant/ravitaillements/add"
-            element={<AddRavitaillement />}
-          />
-        </Route>
         {/* securite */}
-        <Route
-          element={
-            <PrivatedSecurityRoute
-              // redirectPath={"/401"}
-              // isAllowed={user !== undefined && user?.roles.includes("USER")}
-              user={user}
-            />
-          }
-        >
+        {/* <Route element={<PrivatedSecurityRoute user={user} />}>
           <Route path="security" element={<Security />} />
           <Route path="security/users" element={<UsersList />} />
 
           <Route path="security/users/:id" element={<UserEdit />} />
 
           <Route path="security/roles" element={<RolesList />} />
-        </Route>
+        </Route> */}
         {/* param vehicule */}
-        <Route
-          element={
-            <PrivatedParamvhlRoute
-              // redirectPath={"/401"}
-              // isAllowed={user !== undefined && user?.roles.includes("USER")}
-              user={user}
-            />
-          }
-        >
+        {/* <Route element={<PrivatedParamvhlRoute user={user} />}>
           <Route path="paramvhl" element={<Vehicule />} />
           <Route path="paramvhl/vehicules" element={<VehiculeList />} />
           <Route path="paramvhl/vehicules/add" element={<AddVehicule />} />
@@ -191,10 +74,7 @@ const MainRoute = ({ user, pth }) => {
             path="paramvhl/affectations"
             element={<VehiculeAffectationList />}
           />
-          {/*  <Route path="security/users/:id" element={<UserEdit />} />
-
-          <Route path="security/roles" element={<RolesList />} /> */}
-        </Route>
+        </Route> */}
         {/* param rh */}
         <Route
           element={
@@ -230,7 +110,7 @@ const MainRoute = ({ user, pth }) => {
           <Route path="security/roles" element={<RolesList />} /> */}
         </Route>
         {/* report */}
-        <Route
+        {/* <Route
           element={
             <PrivatedReportTraceRoute
               // redirectPath={"/401"}
@@ -241,9 +121,9 @@ const MainRoute = ({ user, pth }) => {
         >
           <Route path="report/trace" element={<ReportTrace />} />
           <Route path="report/trace/evenements" element={<EvenementReport />} />
-        </Route>
+        </Route> */}
 
-        <Route path="/401" element={<AccessDined user={user} pth={pth} />} />
+        <Route path="/401" element={<AccessDined user={user} />} />
         <Route path="/expire" element={<SessionExpire />} />
       </Routes>
       <AuthVerify />

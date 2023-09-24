@@ -1,16 +1,13 @@
 import { useEffect } from "react";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
-import AccessDined from "../page/error/AccessDined";
+import { Routes, Route } from "react-router-dom";
 
-const PrivatedReportTraceRoute = ({
-  children,
+import Layout from "../components/layout/Layout";
+import ReportTrace from "../components/report/trace/ReportTrace";
+import EvenementReport from "../components/report/trace/evenementReport/EvenementReport";
 
-  user,
-}) => {
-  const location = useLocation();
-  let navigate = useNavigate();
+const PrivatedReportTraceRoute = () => {
+  // const location = useLocation();
+  // let navigate = useNavigate();
   // useEffect(() => {
   //   console.log("private route" + redirectPath);
   //   console.log("permet" + isAllowed);
@@ -25,25 +22,20 @@ const PrivatedReportTraceRoute = ({
   //   // navigate(redirectPath);
   //   return <Navigate to={redirectPath} replace />;
   // }
-  if (!user?.roles.includes("ADMIN_PARA_TRACE")) {
-    console.log("redirection " + user);
-    // navigate(redirectPath);
-    // return <Navigate to={"/401"} replace />;
-    return <AccessDined />;
-  }
+  // if (!user?.roles.includes("ADMIN_PARA_TRACE")) {
+  //   console.log("redirection " + user);
+  //   // navigate(redirectPath);
+  //   // return <Navigate to={"/401"} replace />;
+  //   return <AccessDined />;
+  // }
 
   return (
-    <div>
-      <header>
-        <SideBar />
-        <NavBar />
-      </header>
-      <main style={{ marginTop: "58px" }}>
-        <div className="container pt-4 card">
-          {children ? children : <Outlet />}
-        </div>
-      </main>
-    </div>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<ReportTrace />} />
+        <Route path="evenements" element={<EvenementReport />} />
+      </Route>
+    </Routes>
   );
 };
 export default PrivatedReportTraceRoute;

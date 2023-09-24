@@ -1,39 +1,77 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import {
+  //   BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 import "@fortawesome/fontawesome-free/js/all.js";
 import "./App.css";
 
-import authService from "./services/auth/authService";
-import MainRoute from "./routing/MainRoute";
+// import PrivatedTraceRoute from "./routing/PrivatedTraceRoute";
+// import PrivatedCarbuRoute from "./routing/PrivatedCarbuRoute";
+// import PrivatedSecurityRoute from "./routing/PrivatedSecurityRoute";
+// import PrivatedReportTraceRoute from "./routing/PrivatedReportTraceRoute";
+// import PrivatedParamvhlRoute from "./routing/PrivatedParamvhlRoute";
+
+import PrivatedRoute from "./routing/PrivatedRoute";
+import ErrorRoute from "./routing/ErrorRoute";
+// import AuthVerify from "./services/auth/AuthVerify";
+//import AuthGuardTrace from "./components/authGuard/AuthGuardTrace";
+import AuthGuardAuthRoute from "./components/authGuard/AuthGuardAuthRoute";
+import AuthRoute from "./routing/AuthRoute";
+import { setupResponseInterceptor } from "./axios/http-common";
+import PublicRoute from "./routing/PublicRoute";
+import AuthGuardPrivate from "./components/authGuard/AuthGuardPrivate";
 
 const App = () => {
-  const [user, setUser] = useState(undefined);
-  let location = useLocation();
-  let pth = "";
+  const navigate = useNavigate();
+  const [isLoaded, setIsLoaded] = useState(false);
+  // const [user, setUser] = useState(undefined);
+  // // let location = useLocation();
+
   useEffect(() => {
-    console.log("USER APP useEffect" + user);
-    const currentUser = authService.getCurrentUser();
-    console.log("current user" + currentUser);
-    if (currentUser) {
-      setUser(currentUser);
+    // console.log("USER APP useEffect" + user);
+    // const currentUser = authService.getCurrentUser();
+    // console.log("current user" + currentUser);
+    // if (currentUser) {
+    //   setUser(currentUser);
+    // }
+    if (!isLoaded) {
+      console.log("IN PAPP");
+      setIsLoaded(true);
+      setupResponseInterceptor(navigate);
     }
-    // window.onbeforeunload = (e) => {
-    //   console.log(location.pathname);
-
-    //   e.preventDefault();
-
-    //   e.returnValue = "";
-    // };
   }, []);
+
   return (
-    <>
-      {console.log("app render" + location.pathname)}
-      {console.log("user" + user)}
-      <MainRoute user={user} pth={pth} />
-    </>
+    // <BrowserRouter>
+
+    <Routes>
+      <Route path="/*" element={<PublicRoute />} />
+      <Route
+        path="/home/*"
+        element={
+          <AuthGuardPrivate>
+            <PrivatedRoute />
+          </AuthGuardPrivate>
+        }
+      />
+  
+      <Route
+        path="/auth/*"
+        element={
+          <AuthGuardAuthRoute>
+            <AuthRoute />
+          </AuthGuardAuthRoute>
+        }
+      />
+      <Route path="/error/*" element={<ErrorRoute />} />
+    </Routes>
   );
 };
 export default App;
