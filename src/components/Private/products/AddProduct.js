@@ -52,7 +52,7 @@ const AddProduct = (props) => {
         if (originalValue === null || originalValue === false) {
           return [];
         }
-        return value;
+        return [...value];
       })
       .min(1, "Sélectionnez au moins une catégorie"),
     nom: Yup.string().required("Nom Product est obligatoire"),
@@ -123,7 +123,6 @@ const AddProduct = (props) => {
       isValidFileImageFormat(Array.from(e.target.files)) &&
       isValidFileSize(Array.from(e.target.files))
     ) {
-
       const idimage = uuidv4();
       const fileArray = Array.from(e.target.files).map((file, index) => {
         return {
@@ -207,7 +206,6 @@ const AddProduct = (props) => {
         }
       );
     }
-
   };
 
   return (
@@ -322,7 +320,6 @@ const AddProduct = (props) => {
                     name="nom"
                     {...register("nom")}
                     className={`form-control ${errors.nom ? "is-invalid" : ""}`}
-                  
                   />
                   <div className="invalid-feedback">{errors.nom?.message}</div>
                 </div>
@@ -371,7 +368,7 @@ const AddProduct = (props) => {
                           className={`form-check-input ${
                             errors.categories ? "is-invalid" : ""
                           }`}
-                          // onChange={handleCheck}
+                          //  onChange={handleCheck}
                         />
                         <span>{category.nom}</span>
                       </label>
