@@ -124,7 +124,7 @@ function Login() {
           </button>
         </div>
         <div className="text-center  mt-4">
-          <Link to={"/register"}> Ouvrir Compte</Link>
+          <Link to={"/auth/register"}> Ouvrir Compte</Link>
         </div>
         {message && (
           <div className="form-group">
